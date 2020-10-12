@@ -179,7 +179,6 @@ public class Memorama extends Stage implements EventHandler
     {
         if(oculto[i][j])
         {
-            System.out.println(arAsignacion[i][j]);
             Image img = new Image("sample/assets/" + arAsignacion[i][j] + ".png");
             ImageView imv = new ImageView(img);
             imv.setFitHeight(100);
@@ -243,6 +242,7 @@ public class Memorama extends Stage implements EventHandler
             }
         }
     }
+
     private void revolver()
     {
         correctos=0;
@@ -304,4 +304,6 @@ public class Memorama extends Stage implements EventHandler
             }
         }
     }
+
+
 }
