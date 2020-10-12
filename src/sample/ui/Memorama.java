@@ -2,6 +2,7 @@ package sample.ui;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,6 +29,7 @@ public class Memorama extends Stage implements EventHandler
     private GridPane gdpMesa, gdpMesa2;
     private Button[][] arTarjetas;
     private String[][] arAsignacion;
+    private boolean[][] oculto;
 
     private int noPares=0, intentos=0, i1, j1, i2, j2, correctos=0;
     private boolean carta1=true, error=false;
@@ -96,6 +98,7 @@ public class Memorama extends Stage implements EventHandler
             arAsignacion = new String[2][noPares];
             revolver();
             arTarjetas = new Button[2][noPares];
+            oculto = new boolean[2][noPares];
             if(noPares<9)
             {
                 for(int i=0; i<2; i++)
@@ -114,6 +117,7 @@ public class Memorama extends Stage implements EventHandler
                         arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
                         arTarjetas[i][j].setGraphic(imv);
                         arTarjetas[i][j].setPrefSize(100,100);
+                        oculto[i][j]=true;
                         gdpMesa.add(arTarjetas[i][j], j, i);
                     }
                 }
@@ -136,6 +140,7 @@ public class Memorama extends Stage implements EventHandler
                         arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
                         arTarjetas[i][j].setGraphic(imv);
                         arTarjetas[i][j].setPrefSize(100,100);
+                        oculto[i][j]=true;
                         gdpMesa.add(arTarjetas[i][j], j, i);
                     }
                 }
@@ -155,6 +160,7 @@ public class Memorama extends Stage implements EventHandler
                         arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
                         arTarjetas[i][j].setGraphic(imv);
                         arTarjetas[i][j].setPrefSize(100,100);
+                        oculto[i][j]=true;
                         gdpMesa2.add(arTarjetas[i][j], (j-((noPares+1)/2)), i);
                     }
                 }
@@ -171,71 +177,77 @@ public class Memorama extends Stage implements EventHandler
 
     private void verTarjeta(int i, int j)
     {
-        Image img = new Image("sample/assets/" + arAsignacion[i][j] + ".png");
-        ImageView imv = new ImageView(img);
-        imv.setFitHeight(100);
-        imv.setFitWidth(100);
-        imv.setPreserveRatio(true);
-        arTarjetas[i][j].setGraphic(imv);
-        arTarjetas[i][j].setDisable(true);
-        if(carta1)
+        if(oculto[i][j])
         {
-            carta1=false;
-            if(error)
+            System.out.println(arAsignacion[i][j]);
+            Image img = new Image("sample/assets/" + arAsignacion[i][j] + ".png");
+            ImageView imv = new ImageView(img);
+            imv.setFitHeight(100);
+            imv.setFitWidth(100);
+            imv.setPreserveRatio(true);
+            arTarjetas[i][j].setGraphic(imv);
+            oculto[i][j]=false;
+            if(carta1)
             {
-                error=false;
-                Image imgX = new Image("sample/assets/X.jpg");
-                ImageView imvX1 = new ImageView(imgX);
-                ImageView imvX2 = new ImageView(imgX);
-                imvX1.setFitHeight(100);
-                imvX1.setFitWidth(100);
-                imvX1.setPreserveRatio(true);
-                imvX2.setFitHeight(100);
-                imvX2.setFitWidth(100);
-                imvX2.setPreserveRatio(true);
-                arTarjetas[i1][j1].setGraphic(imvX1);
-                arTarjetas[i1][j1].setDisable(false);
-                arTarjetas[i2][j2].setGraphic(imvX2);
-                arTarjetas[i2][j2].setDisable(false);
-            }
-            i1=i;
-            j1=j;
-        }
-        else
-        {
-            carta1=true;
-            i2=i;
-            j2=j;
-            intentos++;
-            vBox.getChildren().remove(lblIntentos);
-            lblIntentos.setText("Intentos: "+intentos);
-            vBox.getChildren().add(lblIntentos);
-            if(arAsignacion[i][j].equalsIgnoreCase(arAsignacion[i1][j1]))
-            {
-                correctos++;
-                if(correctos==noPares)
+                carta1=false;
+                if(error)
                 {
-                    lblMensaje.setText("¡¡Felicidades!! Has encontrado todos los pares.");
-                    vBox.getChildren().clear();
-                    if(noPares<9)
-                    {
-                        vBox.getChildren().addAll(hBox, gdpMesa, lblIntentos, lblMensaje);
-                    }
-                    else
-                    {
-                        vBox.getChildren().addAll(hBox, gdpMesa, gdpMesa2, lblIntentos, lblMensaje);
-                    }
+                    error=false;
+                    Image imgX = new Image("sample/assets/X.jpg");
+                    ImageView imvX1 = new ImageView(imgX);
+                    ImageView imvX2 = new ImageView(imgX);
+                    imvX1.setFitHeight(100);
+                    imvX1.setFitWidth(100);
+                    imvX1.setPreserveRatio(true);
+                    imvX2.setFitHeight(100);
+                    imvX2.setFitWidth(100);
+                    imvX2.setPreserveRatio(true);
+                    arTarjetas[i1][j1].setGraphic(imvX1);
+                    oculto[i1][j1]=true;
+                    arTarjetas[i2][j2].setGraphic(imvX2);
+                    oculto[i2][j2]=true;
                 }
+                i1=i;
+                j1=j;
             }
             else
             {
-                error=true;
+                carta1 = true;
+                i2 = i;
+                j2 = j;
+                intentos++;
+                vBox.getChildren().remove(lblIntentos);
+                lblIntentos.setText("Intentos: " + intentos);
+                vBox.getChildren().add(lblIntentos);
+                if(arAsignacion[i][j].equalsIgnoreCase(arAsignacion[i1][j1]))
+                {
+                    correctos++;
+                    if(correctos == noPares)
+                    {
+                        lblMensaje.setText("¡¡Felicidades!! Has encontrado todos los pares.");
+                        vBox.getChildren().clear();
+                        if(noPares < 9)
+                        {
+                            vBox.getChildren().addAll(hBox, gdpMesa, lblIntentos, lblMensaje);
+                        }
+                        else
+                        {
+                            vBox.getChildren().addAll(hBox, gdpMesa, gdpMesa2, lblIntentos, lblMensaje);
+                        }
+                    }
+                }
+                else
+                {
+                    error = true;
+                }
             }
         }
     }
     private void revolver()
     {
         correctos=0;
+        carta1=true;
+        error=false;
         int[] carta = new int[16];
         for(int i=0; i<16; i++)
         {
