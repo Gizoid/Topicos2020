@@ -99,72 +99,7 @@ public class Memorama extends Stage implements EventHandler
             revolver();
             arTarjetas = new Button[2][noPares];
             oculto = new boolean[2][noPares];
-            if(noPares<9)
-            {
-                for(int i=0; i<2; i++)
-                {
-                    for(int j=0; j<noPares; j++)
-                    {
-                        Image img = new Image("sample/assets/X.jpg");
-                        ImageView imv = new ImageView(img);
-                        imv.setFitHeight(100);
-                        imv.setFitWidth(100);
-                        imv.setPreserveRatio(true);
-
-                        arTarjetas[i][j] = new Button();
-                        int finalI = i;
-                        int finalJ = j;
-                        arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
-                        arTarjetas[i][j].setGraphic(imv);
-                        arTarjetas[i][j].setPrefSize(100,100);
-                        oculto[i][j]=true;
-                        gdpMesa.add(arTarjetas[i][j], j, i);
-                    }
-                }
-            }
-            else
-            {
-                for(int i=0; i<2; i++)
-                {
-                    for(int j=0; j<(noPares+1)/2; j++)
-                    {
-                        Image img = new Image("sample/assets/X.jpg");
-                        ImageView imv = new ImageView(img);
-                        imv.setFitHeight(100);
-                        imv.setFitWidth(100);
-                        imv.setPreserveRatio(true);
-
-                        arTarjetas[i][j] = new Button();
-                        int finalI = i;
-                        int finalJ = j;
-                        arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
-                        arTarjetas[i][j].setGraphic(imv);
-                        arTarjetas[i][j].setPrefSize(100,100);
-                        oculto[i][j]=true;
-                        gdpMesa.add(arTarjetas[i][j], j, i);
-                    }
-                }
-                for(int i=0; i<2; i++)
-                {
-                    for(int j=(noPares+1)/2; j<noPares; j++)
-                    {
-                        Image img = new Image("sample/assets/X.jpg");
-                        ImageView imv = new ImageView(img);
-                        imv.setFitHeight(100);
-                        imv.setFitWidth(100);
-                        imv.setPreserveRatio(true);
-
-                        arTarjetas[i][j] = new Button();
-                        int finalI = i;
-                        int finalJ = j;
-                        arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
-                        arTarjetas[i][j].setGraphic(imv);
-                        arTarjetas[i][j].setPrefSize(100,100);
-                        oculto[i][j]=true;
-                        gdpMesa2.add(arTarjetas[i][j], (j-((noPares+1)/2)), i);
-                    }
-                }
-            }
+            crearGrid();
             vBox.getChildren().addAll(gdpMesa, gdpMesa2, lblIntentos);
         }
         else
@@ -173,6 +108,65 @@ public class Memorama extends Stage implements EventHandler
             vBox.getChildren().addAll(hBox, lblMensaje);
         }
         txtNoTarjetas.clear();
+    }
+
+    private void crearGrid()
+    {
+        int j=0, k;
+        boolean ban=true;
+        if(noPares<9)
+        {
+            k=noPares;
+        }
+        else
+        {
+            k=(noPares+1)/2;
+        }
+        for(int i=0; i<2; i++)
+        {
+            for(; j<k; j++)
+            {
+                Image img = new Image("sample/assets/X.jpg");
+                ImageView imv = new ImageView(img);
+                imv.setFitHeight(100);
+                imv.setFitWidth(100);
+                imv.setPreserveRatio(true);
+
+                arTarjetas[i][j] = new Button();
+                int finalI = i;
+                int finalJ = j;
+                arTarjetas[i][j].setOnAction(event1->verTarjeta(finalI, finalJ));
+                arTarjetas[i][j].setGraphic(imv);
+                arTarjetas[i][j].setPrefSize(100,100);
+                oculto[i][j]=true;
+                if(noPares<9 || k!=noPares)
+                {
+                    gdpMesa.add(arTarjetas[i][j], j, i);
+                }
+                else
+                {
+                    gdpMesa2.add(arTarjetas[i][j], (j-((noPares+1)/2)), i);
+                }
+            }
+            if(noPares>8 && i==1 && ban)
+            {
+                j=k;
+                i=-1;
+                k=noPares;
+                ban=false;
+            }
+            else
+            {
+                if(ban)
+                {
+                    j=0;
+                }
+                else
+                {
+                    j=((noPares+1)/2);
+                }
+            }
+        }
     }
 
     private void verTarjeta(int i, int j)
