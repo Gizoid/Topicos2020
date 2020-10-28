@@ -1,0 +1,25 @@
+.root
+{
+    -fx-background-image: url("https://tat.midishow.com/uploads/default/original/2X/2/28fcd80ad8a1478c0cc55551d8c52fac051493b4.jpeg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+.menu-bar
+{
+    -fx-background-color: #001133;
+    -fx-border-color: #334466;
+    -fx-border-width: 2;
+}
+.menu-bar .label
+{
+    -fx-text-fill: white;
+}
+.menu:hover
+{
+    -fx-background-color: #CCC;
+}
+.menu-item .label
+{
+    -fx-text-fill: black;
+}

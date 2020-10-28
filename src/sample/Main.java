@@ -78,6 +78,7 @@ public class Main extends Application implements EventHandler
         vBoxPrincipal.getChildren().addAll(mnbPrincipal, toolBar);
 
         escena = new Scene(vBoxPrincipal);
+        escena.getStylesheets().add("sample/assets/css/main_styles.css");
     }
 
     private void opcionMenu(int opc)
@@ -98,6 +99,6 @@ public class Main extends Application implements EventHandler
     @Override
     public void handle(Event event)
     {
-        System.out.println("Se está mostrando la pantalla");
+        System.out.println("Se está cerrando la ventana");
     }
 }

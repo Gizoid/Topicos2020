@@ -1,0 +1,57 @@
+.button
+{
+    -fx-background-color: #5577AA;
+}
+#btn
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 50px;
+}
+#fila1
+{
+    -fx-font-size: 10px;
+    -fx-pref-height: 25px;
+    -fx-pref-width: 49px;
+}
+#l
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 40px;
+}
+#backspace
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 98px;
+}
+#tab
+{
+    -fx-font-size: 10px;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 65px;
+}
+#mayus
+{
+    -fx-font-size: 10px;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 75px;
+}
+#enter
+{
+    -fx-pref-height: 103px;
+    -fx-pref-width: 63px;
+}
+#shift
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 141px;
+}
+#alt
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 60px;
+}
+#espacio
+{
+    -fx-pref-height: 50px;
+    -fx-pref-width: 281px;
+}
