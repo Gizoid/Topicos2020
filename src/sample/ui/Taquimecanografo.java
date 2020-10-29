@@ -32,7 +32,7 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
     private String[] arLblBtn5 = {"^   "," <","Z","X","C","V","B","N","M",",",".","-","                    ^"};//13
     private String[] arLblBtn6 = {"ctrl","fn","[+]","alt","","alt gr","ctrl","<",">"};//9
     private String texto="", txtTiempo="Tiempo: 00:00";
-    private boolean tiempoIniciado=false;
+    private boolean tiempoIniciado=false, escrituraIniciada=false;
     private char[] arTexto, arEscritura;
     private int errores=0, palabras=0, min=0, seg=0;
     Timeline tiempo;
@@ -118,6 +118,7 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
                     {
                         tiempo.stop();
                     }
+                    escrituraIniciada=false;
                     errores=0;
                     palabras=0;
                     min=0;
@@ -138,13 +139,18 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
                         String st = br.readLine();
                         while(st != null)
                         {
-                            texto = texto + st + "\n";
+                            texto+=st;
                             st = br.readLine();
+                            if(st!=null)
+                            {
+                                texto+="\n";
+                            }
                         }
                         txtContenido.setText(texto);
+                        txtContenido.deletePreviousChar();
+                        txtContenido.setMouseTransparent(true);
                         fr.close();
                         arTexto = texto.toCharArray();
-                        iniciarTiempo();
                     }
                     catch (Exception e)
                     {
@@ -159,7 +165,6 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
     {
         txtContenido = new TextArea();
         txtContenido.setEditable(false);
-        //txtContenido.setMouseTransparent(true);
         txtContenido.setPrefRowCount(6);
         txtEscritura = new TextArea();
         txtEscritura.setPrefRowCount(6);
@@ -371,6 +376,11 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
         {
             arTeclado3[11].setStyle("-fx-background-color: #5577AA;");
             Comparar();
+            if(!escrituraIniciada)
+            {
+                escrituraIniciada=true;
+                iniciarTiempo();
+            }
         }
 
     }
@@ -463,21 +473,33 @@ public class Taquimecanografo extends Stage implements EventHandler<KeyEvent>
                     errores++;
                     lblErrores.setText("Errores: "+errores);
                 }
-                palabras = txtEscritura.getText().split(" ").length;
+                palabras = txtEscritura.getText().split(" ").length + txtEscritura.getText().split("\n").length-1;
                 lblPalabras.setText("Palabras: "+palabras);
-                if(txtEscritura.getText().length()==texto.length()-1)
+                if(txtEscritura.getText().split("\n")[txtEscritura.getText().split("\n").length-1].equals(txtContenido.getText().split("\n")[0]))
                 {
-                    txtEscritura.appendText("\n");
-                    if(txtEscritura.getText().equals(texto))
+                    String aux="";
+                    for(int i=1;i<txtContenido.getText().split("\n").length;i++)
                     {
-                        tiempo.stop();
-                        tiempoIniciado=false;
-                        txtEscritura.setEditable(false);
-                        lblTiempo.setText(lblTiempo.getText()+"   Texto terminado.");
+                        aux+=txtContenido.getText().split("\n")[i]+"\n";
                     }
-                    else
+                    txtContenido.setText(aux);
+                }
+                if(txtEscritura.getText().equals(texto))
+                {
+                    tiempo.stop();
+                    txtContenido.setText(texto);
+                    txtContenido.setMouseTransparent(false);
+                    txtEscritura.setEditable(false);
+                    if(lblTiempo.getText().equals(txtTiempo))
                     {
-                        txtEscritura.deletePreviousChar();
+                        if(errores==0)
+                        {
+                            lblTiempo.setText(txtTiempo+"   ¡¡Qué pro, terminaste si errores!!");
+                        }
+                        else
+                        {
+                            lblTiempo.setText(txtTiempo+"   Texto terminado.");
+                        }
                     }
                 }
             }
