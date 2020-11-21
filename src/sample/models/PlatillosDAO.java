@@ -1,5 +1,10 @@
 package sample.models;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class PlatillosDAO
 {
     private int id_platillo;
@@ -16,10 +21,63 @@ public class PlatillosDAO
     public int getId_tipo() { return id_tipo; }
     public void setId_tipo(int id_tipo) { this.id_tipo = id_tipo; }
 
-    public void insPlatillo(){}
-    public void updPlatillo(){}
-    public void delPlatilo(){}
-    public void getAllPlatillo(){}
-    public void getPlatillo(){}
+    public void insPlatillo()
+    {
+        try
+        {
+            String query = "insert into tbl_platillos(nombre_platillo,precio_platillo,id_tipo) "+
+                           "values('"+nombre_platillo+"',"+precio_platillo+","+id_tipo+")";
+            Statement stmt = Conexion.con.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch(Exception e) { e.printStackTrace(); }
+    }
+    public void updPlatillo()
+    {
+        try
+        {
+            String query = "update tbl_platillos set nombre_platillo='"+nombre_platillo+"'," +
+                           "precio_platillo="+precio_platillo+", id_tipo="+id_tipo+" where id_platillo="+id_platillo;
+            Statement stmt = Conexion.con.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch(Exception e) { e.printStackTrace(); }
+    }
+    public void delPlatilo()
+    {
+        try
+        {
+            String query = "delete from tbl_platillos where id_platillo = "+id_platillo;
+            Statement stmt = Conexion.con.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch(Exception e) { e.printStackTrace(); }
+    }
+    public ObservableList<PlatillosDAO> getAllPlatillo()
+    {
+        ObservableList<PlatillosDAO> listaP = FXCollections.observableArrayList();
+        try
+        {
+            PlatillosDAO objP;
+            String query = "select * from tbl_platillos order by nombre_platillo";//asc = a->z | desc = z->a
+            Statement stmt = Conexion.con.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next())
+            {
+                objP = new PlatillosDAO();
+                objP.setId_platillo(res.getInt("id_platillo"));
+                objP.setNombre_platillo(res.getString("nombre_platillo"));
+                objP.setPrecio_platillo(res.getFloat("precio_platillo"));
+                objP.setId_tipo(res.getInt("id_tipo"));
+                listaP.add(objP);
+            }
+        }
+        catch(Exception e) { e.printStackTrace(); }
+        return listaP;
+    }
+    public void getPlatillo()
+    {
+
+    }
 
 }

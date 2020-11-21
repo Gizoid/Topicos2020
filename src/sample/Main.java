@@ -3,18 +3,17 @@ package sample;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sample.components.Hilo;
+import sample.models.Conexion;
 import sample.ui.Memorama;
+import sample.ui.Dashboard;
 import sample.ui.Taquimecanografo;
 
 public class Main extends Application implements EventHandler
@@ -22,7 +21,7 @@ public class Main extends Application implements EventHandler
     private VBox vBoxPrincipal;
     private MenuBar mnbPrincipal;
     private Menu menuCompetencia1, menuCompetencia2, menuSalir;
-    private MenuItem itemMemorama, itemPractica2, terminar;
+    private MenuItem itemMemorama, itemPractica2, itemRestaurante, terminar;
     private Scene escena;
 
     private ToolBar toolBar;
@@ -39,6 +38,13 @@ public class Main extends Application implements EventHandler
         //primaryStage.setScene(new Scene(new Button("Presiona"), 300, 275));
         primaryStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST,this);
         primaryStage.show();
+
+        Conexion.crearConexion();
+        /*new Hilo("Sonic").start();
+        new Hilo("Flash").start();
+        new Hilo("Superman").start();
+        new Hilo("Meteoro").start();
+        new Hilo("QuickSilver").start();*/
     }
 
     private void CrearUI()
@@ -53,12 +59,18 @@ public class Main extends Application implements EventHandler
 
         itemMemorama = new MenuItem("Memorama");
         itemMemorama.setOnAction(event -> opcionMenu(1));
+
         itemPractica2 = new MenuItem("Taquimecanógrafo");
         itemPractica2.setOnAction(event -> opcionMenu(2));
+
+        itemRestaurante = new MenuItem(("Restaurante"));
+        itemRestaurante.setOnAction((event -> opcionMenu(3)));
+
         terminar = new MenuItem("Hasta pronto :)");
         terminar.setOnAction(event -> {System.exit(0);});
 
         menuCompetencia1.getItems().addAll(itemMemorama, itemPractica2);
+        menuCompetencia2.getItems().addAll(itemRestaurante);
         menuSalir.getItems().add(terminar);
 
         toolBar = new ToolBar();
@@ -87,7 +99,7 @@ public class Main extends Application implements EventHandler
         {
             case 1: new Memorama(); break;
             case 2: new Taquimecanografo(); break;
-            case 3: break;
+            case 3: new Dashboard(); break;
         }
     }
 

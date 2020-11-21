@@ -6,8 +6,8 @@ import java.sql.DriverManager;
 public class Conexion
 {
     private static String server = "localhost";//127.0.0.1
-    private static String user = "topicos2020";
-    private static String pwd = "123tamarindo";
+    private static String user = "root";
+    private static String pwd = "B166ER12-1";
     private static String db = "restaurante";
 
     public static Connection con;
@@ -15,7 +15,7 @@ public class Conexion
     {
         try
         {
-            Class.forName("com.Mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://"+server+":3306/"+db,user,pwd);
         }
         catch(Exception e)
